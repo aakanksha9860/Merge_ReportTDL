@@ -1,0 +1,363 @@
+[#Menu: Gateway of Tally]
+    Add: Key Item: Before: @@locQuit: "xyz Sales Report": M: Display: xyzSalesReport
+    Add: Key Item: Before: @@locQuit: "xyz Purchase Report": N: Display: xyzPurchaseReport
+    Add: Key Item: Before: @@locQuit: "xyz DebitNote Report": O: Display: xyzDebitNoteReport
+    Add: Key Item: Before: @@locQuit: "xyz CreditNote Report": P: Display: xyzCreditNoteReport
+	
+;;[Report: xyzSalesReport] [Report: xyzPurchaseReport] [Report: xyzDebitNoteReport] [Report: xyzCreditNoteReport]
+;;[Report: xyzSalesReport, xyzPurchaseReport, xyzDebitNoteReport, xyzCreditNoteReport]
+[Report: xyzSalesReport]
+[Report: xyzPurchaseReport]
+[Report: xyzDebitNoteReport]
+[Report: xyzCreditNoteReport]
+
+	Form: xyzSalesReportForm
+    Title: "xyz Sales Report"
+    Variable: StockGroupName
+    Set: StockGroupName: $$SysName:AllItems
+    Variable: LedgerName
+    Set: LedgerName: $$SysName:AllItems
+    Variable: StockItemName
+    Set: StockItemName: $$SysName:AllItems
+	Variable: VoucherTypeName
+    Set: VoucherTypeName: $$SysName:AllItems
+	
+	Form: xyzPurchaseReportForm 
+    Title: "xyz Purchase Report"
+    Variable: StockGroupName
+    Set: StockGroupName: $$SysName:AllItems
+    Variable: LedgerName
+    Set: LedgerName: $$SysName:AllItems
+    Variable: StockItemName
+    Set: StockItemName: $$SysName:AllItems
+	Variable: VoucherTypeName
+    Set: VoucherTypeName: $$SysName:AllItems
+
+[Form: xyzDebitNoteReportForm]
+    Width: 100% Screen
+    Height: 100% Screen
+    Part: xyzDebitNoteReportPart
+    Set: StockGroupName: ##StockGroupName
+    Set: LedgerName: ##LedgerName
+    Set: StockItemName: ##StockItemName
+	Set: VoucherTypeName: ##VoucherTypeName
+    Buttons: F2ChangePeriod, xyzLedgerName, xyzStockGroup, xyzItemName, xyzVoucherTypeName
+
+[Form: xyzCreditNoteReportForm]
+    Width: 100% Screen
+    Height: 100% Screen
+    Part: xyzCreditNoteReportPart
+    Set: StockGroupName: ##StockGroupName
+    Set: LedgerName: ##LedgerName
+    Set: StockItemName: ##StockItemName
+	Set: VoucherTypeName: ##VoucherTypeName
+    Buttons: F2ChangePeriod, xyzLedgerName, xyzStockGroup, xyzItemName, xyzVoucherTypeName
+
+;;[Part: xyzSalesReportPart, xyzPurchaseReportPart, xyzDebitNoteReportPart, xyzCreditNoteReportPart]
+[Part: xyzSalesReportPart]
+[Part: xyzPurchaseReportPart]
+[Part: xyzDebitNoteReportPart]
+[Part: xyzCreditNoteReportPart]
+	Line: xyzSalesReportLine_Title, xyzSalesReportLine 
+	Line: xyzPurchaseReportLine_Title, xyzPurchaseReportLine 
+	Line: xyzDebitNoteReportLine_Title, xyzDebitNoteReport
+	Line: xyzCreditNoteReportLine_Title, xyzCreditNoteReportLine
+    Repeat: xyzSalesReportLine: SalesDataCollection
+	Repeat: xyzPurchaseReportLine: PurchaseDataCollection
+	Repeat: xyzDebitNoteReportLine: DebitNoteDataCollection
+	Repeat: xyzCreditNoteReportLine: CreditNoteDataCollection
+    Scroll: Both
+    Border: Thin Box
+    Common Border: Yes
+	Add: Line: xyzSalesReportLine_Total
+	Add: Line: xyzPurchaseReportLine_Total
+	Add: Line: xyzDebitNoteReportLine_Total
+	Add: Line: xyzCreditNoteReportLine_Total
+
+;;[Line: xyzSalesReportLine_Title, xyzPurchaseReportLine_Title, xyzDebitNoteReportLine_Title, xyzCreditNoteReportLine_Title]
+[Line: xyzSalesReportLine_Title]
+[Line: xyzPurchaseReportLine_Title]
+[Line: xyzDebitNoteReportLine_Title]
+[Line: xyzCreditNoteReportLine_Title]	
+	Field: xyzDateField, xyzLedgerNameField, xyzItemNameField, xyzPartNoField, xyzStockSummaryFilter, xyzVoucherNoField, xyzGSTINField, xyzPANNoField, xyzQuantityField, xyzAltQuantityField, xyzRateField, xyzValueField, xyzKGSField, xyzAlterQuantityField, xyzKgsRateField, xyzKgsValueField, xyzBoxField, xyzBoxRateField, xyzBoxValueField, xyzVoucherTypeField
+    Local: Field: xyzDateField: Set As: "Date"
+    Local: Field: xyzLedgerNameField: Set As: "Party Name"
+    Local: Field: xyzItemNameField: Set As: "Item Name"
+    Local: Field: xyzPartNoField: Set As: "Part Number"
+    Local: Field: xyzStockSummaryFilter: Set As: "Group Name"
+    Local: Field: xyzVoucherNoField: Set As: "Voucher Number"
+    Local: Field: xyzGSTINField: Set As: "GSTIN"
+    Local: Field: xyzPANNoField: Set As: "PAN No."
+    Local: Field: xyzQuantityField: Set As: "Qty Primary"
+    Local: Field: xyzAltQuantityField: Set As: "Qty Alternate"
+    Local: Field: xyzRateField: Set As: "Rate"
+    Local: Field: xyzValueField: Set As: "Amount"
+    Local: Field: xyzKGSField: Set As: "KgsQty Prm"
+    Local: Field: xyzAlterQuantityField: Set As: "KgsQty Secondary"
+    Local: Field: xyzKgsRateField: Set As: "Rate"
+    Local: Field: xyzKgsValueField: Set As: "Value"
+    Local: Field: xyzBoxField: Set As: "BoxQty"
+    Local: Field: xyzBoxRateField: Set As: "Rate"
+    Local: Field: xyzBoxValueField: Set As: "Value"
+    Local: Field: xyzVoucherTypeField: Set As: "Voucher Type"
+    Local: Field: xyzDateField: Set As: "Date"
+    Local: Field: Default: Type: String
+    Local: Field: Default: Align: Center
+    Border: Thin Bottom
+
+
+;;[Line: xyzSalesReportLine, xyzPurchaseReportLine, xyzDebitNoteReportLine, xyzCreditNoteReportLine]
+[Line: xyzSalesReportLine]
+[Line: xyzPurchaseReportLine]
+[Line: xyzDebitNoteReportLine]
+[Line: xyzCreditNoteReportLine]   
+   Field: xyzDateField, xyzLedgerNameField, xyzItemNameField, xyzPartNoField, xyzStockSummaryFilter, xyzVoucherNoField, xyzGSTINField, xyzPANNoField, xyzQuantityField, xyzAltQuantityField, xyzRateField, xyzValueField, xyzKGSField, xyzAlterQuantityField, xyzKgsRateField, xyzKgsValueField, xyzBoxField, xyzBoxRateField, xyzBoxValueField, xyzVoucherTypeField
+    Local: Field: Default: Border: Thin Left
+    Local: Field: xyzDateField: Delete: Border
+    Height: 1.4
+
+[Field: xyzDateField]
+    Use: Short Date Field
+    Set as: $$String:$Date:"dd-mm-yyyy"
+    Width: 10% Page
+
+[Field: xyzLedgerNameField]
+    Use: Name Field
+    Set as: $LedgerName
+    Width: 20% Page
+
+[Field: xyzItemNameField]
+    Use: Name Field
+    Set as: $StockItemName
+    Width: 20% Page
+
+[Field: xyzPartNoField]
+    Use: Name Field
+    Set as: $StockItemPartNumber
+    Width: 15% Page
+
+[Field: xyzStockSummaryFilter]
+    Use: Name Field
+    Set as: $StockGroup
+    Width: 20% Page
+
+[Field: xyzVoucherNoField]
+    Use: Name Field
+    Set as: $VoucherNumber
+    Width: 10% Page
+
+[Field: xyzGSTINField]
+    Use: Name Field
+    Set as: $PartyGSTIN
+    Width: 20% Page
+
+[Field: xyzPANNoField]
+    Use: Name Field
+    Set as: $PartyPANNo
+    Width: 15% Page
+
+[Field: xyzQuantityField]
+    Use: Qty Field
+    Set as: $BilledQty
+    Width: 10% Page
+
+[Field: xyzAltQuantityField]
+    Use: Qty Secondary Field
+    Set as: $BilledQty
+    Width: 10% Page
+
+[Field: xyzRateField]
+    Use: Rate Field
+    Set as: $Amount/$BilledQty
+    Width: 10% Page
+
+[Field: xyzValueField]
+    Use: Amount Field
+    Set as: $Amount
+    Width: 15% Page
+
+[Field: xyzKGSField]
+    Use: Qty Field
+    Set as: If @CheckUnit = "kgs" Then $BilledQty Else ""
+    Width: 10% Page
+    CheckUnit: $BaseUnits:StockItem:$StockItemName
+
+[Field: xyzAlterQuantityField]
+    Use: Qty Secondary Field
+    Set as: If @CheckUnit = "kgs" Then $BilledQty Else ""
+    Width: 10% Page
+    CheckUnit: $BaseUnits:StockItem:$StockItemName
+
+[Field: xyzKgsRateField]
+    Use: Rate Field
+    Set as: If @CheckUnit = "kgs" Then $Amount/$BilledQty Else ""
+    Width: 10% Page
+    CheckUnit: $BaseUnits:StockItem:$StockItemName
+
+[Field: xyzKgsValueField]
+    Use: Amount Field
+    Set as: If @CheckUnit = "kgs" Then $Amount Else ""
+    Width: 15% Page
+    CheckUnit: $BaseUnits:StockItem:$StockItemName
+
+[Field: xyzBoxField]
+    Use: Qty Field
+    Set as: If @CheckUnit != "kgs" Then $BilledQty Else ""
+    Width: 10% Page
+    CheckUnit: $BaseUnits:StockItem:$StockItemName
+
+[Field: xyzBoxRateField]
+    Use: Rate Field
+    Set as: If @CheckUnit != "kgs" Then $Amount/$BilledQty Else ""
+    Width: 10% Page
+    CheckUnit: $BaseUnits:StockItem:$StockItemName
+
+[Field: xyzBoxValueField]
+    Use: Amount Field
+    Set as: If @CheckUnit != "kgs" Then $Amount Else ""
+    Width: 15% Page
+    CheckUnit: $BaseUnits:StockItem:$StockItemName
+
+[Field: xyzVoucherTypeField]
+    Use: Name Field
+    Set as: $VoucherTypeName
+    Width: 20% Page
+
+[System: UDF]
+    xyzPartNumber: String: 1001
+    xyzPAN: String: 1002
+	
+[Collection: StockSummaryCollection]
+    Type: Stock Summary
+    Fetch: Name, ClosingBalance
+	
+;;[Collection: SalesDataCollection_Main, PurchaseDataCollection_Main, DebitNoteDataCollection_Main, CreditNoteDataCollection_Main]
+[Collection: SalesDataCollection_Main]  
+[Collection: PurchaseDataCollection_Main]
+[Collection: DebitNoteDataCollection_Main]
+[Collection: CreditNoteDataCollection_Main]
+  Type: Vouchers: VoucherType
+    Child Of: $$VchTypeSales, $$VchTypePurchase, $$VchTypeDebitNote, $$VchTypeCreditNote
+    Belongs To: Yes
+    Fetch: Date, VoucherNumber, PartyGSTIN, BilledQty, Rate, Amount, StockItemName, VoucherTypeName, InventoryEntries.*, StockItemPartNumber, PartyPANNo
+	
+;;[Line: xyzSalesReportLine_Total, xyzPurchaseReportLine_Total, xyzDebitNoteReportLine_Total, xyzCreditNoteReportLine_Total]
+[Line: xyzSalesReportLine_Total]
+[Line: xyzPurchaseReportLine_Total]
+[Line: xyzDebitNoteReportLine_Total]
+[Line: xyzCreditNoteReportLine_Total]
+	Field: xyzDateField, xyzLedgerNameField, xyzItemNameField, xyzPartNoField, xyzStockSummaryFilter, xyzVoucherNoField, xyzGSTINField, xyzPANNoField, xyzQuantityField, xyzAltQuantityField, xyzRateField, xyzValueField, xyzKGSField, xyzAlterQuantityField, xyzKgsRateField, xyzKgsValueField, xyzBoxField, xyzBoxRateField, xyzBoxValueField, xyzVoucherTypeField
+    Local: Field: xyzLedgerNameField: Set As: "Total"
+    Local: Field: xyzQuantityField: Set As: $$Total:TotalQtyPrimary
+    Local: Field: xyzAltQuantityField: Set As: $$Total:TotalQtyAlternate
+    Local: Field: xyzRateField: Set As: $$Avg:AvgRate
+    Local: Field: xyzValueField: Set As: $$Total:TotalValue
+    Local: Field: xyzKGSField: Set As: $$Total:TotalKgsQty
+    Local: Field: xyzAlterQuantityField: Set As: $$Total:TotalKgsQty
+    Local: Field: xyzKgsRateField: Set As: $$Avg:AvgKgsRate
+    Local: Field: xyzKgsValueField: Set As: $$Total:TotalKgsValue
+    Local: Field: xyzBoxField: Set As: $$Total:TotalBoxQty
+    Local: Field: xyzBoxRateField: Set As: $$Avg:AvgBoxRate
+    Local: Field: xyzBoxValueField: Set As: $$Total:TotalBoxValue
+    Border: Thin Bottom
+    Height: 1.4
+	
+;;[Collection: SalesDataCollection, PurchaseDataCollection, DebitNoteDataCollection, CreditNoteDataCollection]
+[Collection: SalesDataCollection] 
+[Collection: PurchaseDataCollection]
+[Collection: DebitNoteDataCollection]
+[Collection: CreditNoteDataCollection]
+ Source Collection: SalesDataCollection_Main, PurchaseDataCollection_Main, DebitNoteDataCollection_Main, CreditNoteDataCollection_Main
+    Walk: InventoryEntries
+    Fetch: Date, PartyName, VoucherNumber, PartyGSTIN, PartyPANNo, BilledQty, Rate, Amount, StockItemName, StockItemPartNumber, VoucherTypeName, PartyPANNo
+    Sort: @@SortByDate
+    Compute: VoucherNumber: $$Owner:$VoucherNumber
+    Compute: StockGroup: $Parent:StockItem:$StockItemName
+    Compute: LedgerName: $$Owner:$LedgerName
+    Compute: SortDate: $$Date:$Date
+    Filter: StockGroupFilter
+    Filter: LedgerNameFilter
+    Filter: StockItemNameFilter
+    Filter: VoucherTypeNameFilter
+    Aggregation: TotalQty: $$Total:$xyzBilledQty
+    Aggregation: TotalAltQty: $$Total:$xyzBilledQty
+    Aggregation: TotalValue: $$Total:$xyzAmount
+    Aggregation: TotalKgsQty: $$Total: If @CheckUnit = "kgs" Then $xyzBilledQty Else ""
+    Aggregation: TotalKgsValue: $$Total: If @CheckUnit = "kgs" Then $xyzAmount Else """"
+    Aggregation: TotalBoxQty: $$Total: If @CheckUnit != "kgs" Then $xyzBilledQty Else ""
+    Aggregation: TotalBoxValue: $$Total: If @CheckUnit != "kgs" Then $xyzAmount Else ""
+    Aggregation: AvgRate: $$Avg:$xyzRate
+    Aggregation: AvgKgsRate: $$Avg: If @CheckUnit = "kgs" Then $xyzAmount/$xyzBilledQty Else ""
+    Aggregation: AvgBoxRate: $$Avg: If @CheckUnit != "kgs" Then $xyzAmount/$xyzBilledQty Else ""
+
+[Collection: PartyLedgerCollection]
+    Type: Ledger
+    Child Of: $$GroupSundryDebtors
+    Fetch: Name
+
+[Collection: VoucherTypeCollection]
+    Type: Voucher Type
+    Fetch: Name
+	
+
+[System: Formula]
+    xyzDateFilter: ($Date >= ##SVFromDate AND $Date <= ##SVToDate)
+    StockGroupFilter: If $$IsSysNameEqual:AllItems:##StockGroupName Then Yes Else ##StockGroupName = $StockGroup
+    LedgerNameFilter: If $$IsSysNameEqual:AllItems:##LedgerName Then Yes Else ##LedgerName = $LedgerName
+    StockItemNameFilter: If $$IsSysNameEqual:AllItems:##StockItemName Then Yes Else ##StockItemName = $StockItemName
+    VoucherTypeNameFilter: If $$IsSysNameEqual:AllItems:##VoucherTypeName Then Yes Else ##VoucherTypeName = $VoucherTypeName
+	SortByDate: $Date
+
+
+[Button: xyzStockGroup]
+    Title: "Stock Group"
+    Key: F5
+    Action: Modify Variables: StockGroupName
+
+[Report: xyzStockGroup]
+    Title: "Select Stock Group"
+    Use: Collection Variable
+    Local: Field: MV Title: Info: "Name of Stock Group"
+    Local: Line: Collection Variable: Field: StockGroupName
+    Local: Field: StockGroupName: Delete: Table
+    Local: Field: StockGroupName: Add: Table: StockSummaryCollection, AllItems
+
+[Button: xyzLedgerName]
+    Title: "Party Name"
+    Key: F3
+    Action: Modify Variables: LedgerName
+
+[Report: xyzLedgerName]
+    Title: "Party Name"
+    Use: Collection Variable
+    Local: Field: MV Title: Info: "Name of Party Name"
+    Local: Line: Collection Variable: Field: LedgerName
+    Local: Field: LedgerName: Delete: Table
+    Local: Field: LedgerName: Add: Table: PartyLedgerCollection, AllItems
+
+[Button: xyzItemName]
+    Title: "Stock Item Name"
+    Key: F4
+    Action: Modify Variables: StockItemName
+
+[Report: xyzItemName]
+    Title: "Select Stock Item Name"
+    Use: Collection Variable
+    Local: Field: MV Title: Info: "Name of Stock Item Name"
+    Local: Line: Collection Variable: Field: StockItemName
+    Local: Field: StockItemName: Delete: Table
+    Local: Field: StockItemName: Add: Table: StockItemCollection, AllItems
+	
+[Button: xyzVoucherTypeName]
+    Title: "Voucher Type"
+    Key: F6
+    Action: Modify Variables: VoucherTypeName
+
+[Report: xyzVoucherTypeName]
+    Title: "Voucher Type"
+    Use: Collection Variable
+    Local: Field: MV Title: Info: "Name of Voucher Type"
+    Local: Line: Collection Variable: Field: VoucherTypeName
+    Local: Field: VoucherTypeName: Delete: Table
+    Local: Field: VoucherTypeName: Add: Table: VoucherTypeCollection, AllItems
+
